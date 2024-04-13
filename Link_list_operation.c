@@ -155,20 +155,22 @@ void del_at_end()
 
 //To avoid any memory leak.
 void free_ptr()
-{
-	
+{	
 	struct link_list *t2;
 	struct link_list *t1;
 	t1 = t2 = head;
-	int count =0;
+	while(total_node){
+		int count =0;
 
-	while(t1->next != NULL){
-		++count;
-		t2 = t1;
-		t1 = t1->next;
+		while(t1->next != NULL){
+			++count;
+			t2 = t1;
+			t1 = t1->next;
+		}//while ends
+		t2->next = NULL;
+		free(t1);
+		total_node--;
 	}//while ends
-	t2->next = NULL;
-	free(t1);
 //	free(head);
 //	free(ptr);
 
