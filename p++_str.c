@@ -1,4 +1,4 @@
-//Program to understand pointer arithematic.
+//Program to understand pointer arithematic and passing by refrence to a function.
 
 #include<stdio.h>
 void access_by_ref( char *, int * );//Function prototyping.
