@@ -1,23 +1,27 @@
+/*THIS IS NOT MENU DRIVEN PROGRAM, THIS IS TESTING PROGRAM.*/
 //Program to maintain student data in structure.
 //In this program only the ID is used.
 #include<stdio.h>
 #include<stdlib.h>
 
-void student_add(void);
-void display(void);
-int search(void);
-void modify(void);
-void free_(void);
-void free_all(void);
+void student_add(void);// to add the student
+void display(void);//To display the details of student
+int search(void);//to search the student.
+void modify(void);//to search and modify the details of student.
+void free_(void);//to free the details of student
+void free_all(void);// to free all details of the student.
+
+/*Student structure currently contains just ID currently.*/
 struct student
 {
-    int id;
-}stu, *stu_p;
+    int id;// student structure member.
+}stu, *stu_p;//stu = variable , *stu_p is the structure pointer.
 
-int student_no = 0;
+int student_no = 0; // global declaration of number of student.
 
 int main()
 {
+    /*In main all the functions are been tested, no this is not a menu driven program*/
     student_add();
     int sea = search();
     printf("Id found at: %d", sea);
@@ -26,6 +30,8 @@ int main()
     free_all();
 }//main ends
 
+/*To add the student in the array.
+In this function we are making a malloc (calloc is use but interprit it as malloc)*/
 void student_add()
 {
     
