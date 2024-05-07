@@ -1,4 +1,8 @@
-/*Program to pick the last word of the string*/
+/*
+Program to reverse a sub string inside a string.
+Author: Nishant Thosar
+Date: 07 MAY 2024
+*/
 
 #include<string.h>
 #include <stdio.h>
