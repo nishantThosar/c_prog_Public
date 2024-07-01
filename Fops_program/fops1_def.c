@@ -1,0 +1,1 @@
+/*File for opening/creation of file in the directory*/
