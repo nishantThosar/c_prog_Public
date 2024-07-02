@@ -2,11 +2,10 @@
 
 #include <stdio.h>
 #include <string.h>
-
 #include "fops1_switch.h"
 
 #define DEF_FILE_NAME "Example.txt"
-
+extern char *filename;
 int main(int argc, char const *argv[])
 {
 /*In the starting line of code we are keeping a user input option to input a filename
@@ -32,8 +31,11 @@ int main(int argc, char const *argv[])
 	}//if ends
 	else
 	{
-		strcat(*argv[1], ".txt");
-		FILE *fp = fopen(*argv[1], "r");	
+		filename = (char*)calloc(strlen(argv[1]+5),1);
+		// memcpy(filename,argv[1], strlen(argv[1]));
+		// strcat(filename, ".txt");
+		sprintf(filename,"%s%s",argv[1],".txt");
+		FILE *fp = fopen(filename, "r");	
 		if (fp)
 		{
 			printf("\n File available");
