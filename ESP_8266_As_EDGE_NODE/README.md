@@ -3,7 +3,7 @@
 📅 **Date**: July 12, 2025  
 ✍️ **Author**: [Nishant Thosar]  
 📦 **Platform**: ESP8266 (NodeMCU, ESP-01, etc.)  
-📡 **Broker**: Raspberry Pi running Mosquitto (local MQTT broker)
+📡 **Broker**: Raspberry Pi running Mosquitto 
 
 ---
 
@@ -32,14 +32,13 @@ esp8266_mqtt_edge_node/
 
 ### 🧰 Hardware
 
-- ESP8266 board (NodeMCU or ESP-01)
-- USB-to-Serial adapter (for ESP-01)
+- ESP8266 board (NodeMCU)
 - Raspberry Pi with Mosquitto installed
 - Common components (LED for testing, optional sensors)
 
 ### 💻 Software
 
-- Arduino IDE (tested on Ubuntu 22.04+)
+- Arduino IDE (tested on Ubuntu 24.04)
 - ESP8266 Board Package (via Board Manager)
 - Required Libraries:
   - `ESP8266WiFi` (built-in with ESP8266 core)
@@ -95,9 +94,6 @@ edge_nodes/
 ├── esp8266/
 │   ├── data
 │   └── cmd
-├── esp01/
-│   ├── data
-│   └── cmd
 ├── node2/
 │   └── ...
 ```
@@ -125,10 +121,13 @@ edge_nodes/
      ```
      http://arduino.esp8266.com/stable/package_esp8266com_index.json
      ```
+     **Install ESP32 Board Support**:
+     ```
+     https://dl.espressif.com/dl/package_esp32_index.json
+     ```
    - Then go to `Tools > Board > Boards Manager` → install **"ESP8266 by ESP8266 Community"**
 
 2. **Select Your Board**:
-   - ESP-01 → `Generic ESP8266 Module`
    - NodeMCU → `NodeMCU 1.0 (ESP-12E Module)`
 
 3. **Select Correct Port and Upload Settings**:
@@ -144,22 +143,6 @@ edge_nodes/
 
 ## ⚡ How to Flash ESP8266
 
-### For **ESP-01**:
-1. Connect USB-to-Serial as:
-   - TX ↔ RX
-   - RX ↔ TX
-   - GND ↔ GND
-   - VCC ↔ 3.3V (⚠️ Not 5V!)
-   - CH_PD ↔ 3.3V
-   - GPIO0 ↔ GND (for flashing mode)
-
-2. Open Arduino IDE → select board/port → upload the sketch.
-
-3. After flashing:
-   - Disconnect GPIO0 from GND
-   - Power cycle the ESP-01
-
-### For **NodeMCU**:
 - Just connect via USB and click upload. Auto-flash is handled by onboard circuitry.
 
 ---
@@ -219,7 +202,7 @@ Feel free to use, modify, and distribute this project. Attribution is appreciate
 - Need help? Found a bug? Want to contribute improvements?
 - Feel free to open issues or submit pull requests.
 
-📧 Contact: `you@example.com` (replace with your actual address)
+📧 Contact: `nthosar.temp@gmail.com`
 
 ---
 
