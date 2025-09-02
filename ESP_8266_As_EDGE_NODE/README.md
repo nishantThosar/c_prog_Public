@@ -1,7 +1,7 @@
 # ESP8266 MQTT Edge Node Firmware
 
 📅 **Date**: July 12, 2025  
-✍️ **Author**: [Nishant Thosar]  
+✍️ **Author**: Nishant Thosar  
 📦 **Platform**: ESP8266 (NodeMCU, ESP-01, etc.)  
 📡 **Broker**: Raspberry Pi running Mosquitto 
 
