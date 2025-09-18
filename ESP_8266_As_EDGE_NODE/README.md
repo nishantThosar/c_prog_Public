@@ -22,7 +22,7 @@ This firmware enables an ESP8266-based IoT edge node to connect to a local MQTT 
 
 ```
 esp8266_mqtt_edge_node/
-├── esp8266_mqtt_edge_node.ino   # Main firmware sketch
+├── ESP_01_STM32_ver2_3.ino      # Main firmware sketch
 ├── README.md                    # This documentation
 ```
 
