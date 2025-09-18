@@ -112,8 +112,7 @@ STM32 sending the wifi SSID and Password via UART4 : "wifi=Nishant;pass=Temp \n"
 
 ### 💻 Software
 - STM32CubeIDE or STM32 HAL-based project  
-- UART + DMA enabled for UART4  
-- Example uses `USART2` for debugging (printf to serial terminal)  
+- UART + DMA enabled for UART4   (DMA in Normal mode reception in Byte form Data width). 
 
 ---
 
