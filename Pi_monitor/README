@@ -1,0 +1,238 @@
+# 🖥️ PiMonitor — Raspberry Pi SSH Monitor & Auto-Reconnect
+
+> A PowerShell script that monitors your Raspberry Pi over SSH from Windows 11.  
+> Auto-reconnects when the Pi drops, plays sound alerts, and logs every event.
+
+**Author:** Nishant T  
+**Version:** 1.0  
+**Platform:** Windows 11  
+**Language:** PowerShell  
+
+---
+
+## 📋 Table of Contents
+
+- [About](#about)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [How to Run](#how-to-run)
+- [Usage](#usage)
+- [Controls](#controls)
+- [Log File](#log-file)
+- [How It Works](#how-it-works)
+- [Troubleshooting](#troubleshooting)
+
+---
+
+## About
+
+**PiMonitor** is a lightweight PowerShell script designed for anyone who SSHs into a Raspberry Pi regularly and wants automatic recovery when the connection drops.
+
+It is especially useful in environments where the Pi may lose power, reboot, or drop off the network unexpectedly — such as home lab setups, IoT projects, or remote Pi deployments.
+
+---
+
+## Features
+
+- ✅ **Auto-reconnect SSH** — automatically reconnects when the Pi comes back online
+- 🔔 **Sound alerts** — plays distinct beeps when Pi goes offline and when it comes back
+- 📝 **Event logging** — saves all disconnect/reconnect events with timestamps to a `.txt` file
+- 🌐 **Works on office Wi-Fi** — uses TCP port check instead of ping, so it works on networks that block ICMP packets
+- 🔑 **Password & SSH key auth** — supports both authentication methods
+- ❓ **Smart disconnect detection** — asks if the disconnect was intentional before deciding to wait or exit
+- 🛑 **Clean exit** — stop the monitor anytime with `Ctrl+C`
+
+---
+
+## Requirements
+
+- Windows 11
+- PowerShell 5.1 or later (pre-installed on Windows 11)
+- OpenSSH client (pre-installed on Windows 11)
+- Raspberry Pi with SSH enabled and connected to the same network
+
+---
+
+## Installation
+
+**1. Download the script**
+
+Clone the repository or download `PiMonitor.ps1` directly:
+
+```powershell
+git clone https://github.com/YOUR_USERNAME/PiMonitor.git
+cd PiMonitor
+```
+
+**2. Allow PowerShell scripts to run** *(first time only)*
+
+Open PowerShell as Administrator and run:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+Type `Y` and press Enter to confirm.
+
+**3. Unblock the downloaded file** *(first time only)*
+
+```powershell
+Unblock-File -Path .\PiMonitor.ps1
+```
+
+> This removes the Windows "downloaded from internet" block that prevents the script from running.
+
+---
+
+## How to Run
+
+**Step 1** — Open PowerShell (search in Start Menu → right-click → Run as Administrator)
+
+**Step 2** — Navigate to the folder where you saved the script:
+
+```powershell
+cd C:\Users\YourName\Downloads\PiMonitor
+```
+
+**Step 3** — Run the script:
+
+```powershell
+.\PiMonitor.ps1
+```
+
+---
+
+## Usage
+
+When you run the script, it will first show an info screen with description and controls. Press any key to continue.
+
+Then it will ask for your Pi's details:
+
+```
+  Enter Pi IP address (e.g. 10.182.7.147): 192.168.1.42
+  Enter Pi username   (default is 'pi'):    pi
+  SSH key path        (leave blank for password auth):
+```
+
+After confirming the details, the SSH session starts automatically.
+
+### Example Session
+
+```
+  Host     : 192.168.1.42
+  User     : pi
+  Auth     : Password
+  Log File : C:\Users\Nishant\Downloads\PiMonitor\pi_disconnect_log.txt
+
+[2026-03-24 10:00:01] [INFO] Monitor started. Target: pi@192.168.1.42:22
+[2026-03-24 10:00:02] [OK]   Starting SSH session...
+[2026-03-24 10:45:12] [WARN] SSH session ended. Duration: 00:45:10
+[2026-03-24 10:45:13] [ERROR] Pi went OFFLINE (port 22 unreachable).
+[2026-03-24 10:45:33] [WARN] Pi still offline... (attempt 2 / 20)
+[2026-03-24 10:46:05] [OK]   Pi is back online! (attempt 6)
+[2026-03-24 10:46:10] [OK]   Reconnecting SSH...
+```
+
+---
+
+## Controls
+
+| Action | What to do |
+|---|---|
+| Stop the monitor anytime | Press `Ctrl+C` in the monitor window |
+| End SSH session manually | Type `exit` in the SSH shell |
+| Reconnect after manual exit | Press `R` when prompted |
+| Exit after manual disconnect | Press any key other than `R` |
+| Intentional Pi shutdown | Press `Y` when asked — script exits cleanly |
+| Unexpected Pi crash | Press `N` when asked — script waits and reconnects |
+
+### Sound Alerts
+
+| Event | Sound |
+|---|---|
+| Pi went offline | 3 descending beeps 🔴 |
+| Pi came back online | 2 ascending beeps 🟢 |
+
+---
+
+## Log File
+
+The log file `pi_disconnect_log.txt` is saved in the **same folder as the script** automatically.
+
+**View it in File Explorer:** Navigate to the script folder and open `pi_disconnect_log.txt`
+
+**View it live in PowerShell** (updates in real time while the script runs):
+
+```powershell
+Get-Content ".\pi_disconnect_log.txt" -Wait
+```
+
+**Log format:**
+
+```
+[YYYY-MM-DD HH:MM:SS] [LEVEL] Message
+```
+
+**Log levels:**
+
+| Level | Meaning |
+|---|---|
+| `[INFO]` | General events (monitor started/stopped) |
+| `[OK]` | Positive events (Pi online, SSH connected) |
+| `[WARN]` | Warnings (Pi offline, waiting to reconnect) |
+| `[ERROR]` | Errors (Pi unreachable, gave up waiting) |
+
+---
+
+## How It Works
+
+Instead of using `ping` (ICMP) to check if the Pi is online, PiMonitor opens a **TCP connection directly to port 22** (SSH port). This means it works reliably even on:
+
+- Office Wi-Fi with AP Isolation enabled
+- Networks that block ICMP/ping between devices
+- Corporate networks with strict firewall rules
+
+```
+Windows PC  ──── TCP:22 check ────►  Raspberry Pi
+             (no ping needed)
+```
+
+If the TCP check succeeds → Pi is reachable → SSH session starts.  
+If the TCP check fails → Pi is offline → monitor waits and retries.
+
+---
+
+## Troubleshooting
+
+**Script won't run — "not digitally signed" error**
+```powershell
+# Run this first:
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+# Then unblock the file:
+Unblock-File -Path .\PiMonitor.ps1
+```
+
+**`.local` hostname not resolving (e.g. `raspberrypi.local`)**
+
+Use the Pi's IP address directly instead. Find it with:
+```powershell
+arp -a
+```
+Or check your router's connected devices list.
+
+**Script says Pi is offline but SSH works fine**
+
+Your network is blocking ICMP ping. This script already handles this by using TCP port checking — make sure you are using the latest version of `PiMonitor.ps1`.
+
+**SSH not found / not recognized**
+
+OpenSSH is built into Windows 11. If it's missing, enable it via:  
+Settings → Apps → Optional Features → Add a feature → OpenSSH Client
+
+---
+
+## License
+
+This project is open source and free to use for personal and educational purposes.
